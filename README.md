@@ -17,8 +17,8 @@ ECGs have this structure:
 id: unique identifier for each ECG
 date: creation date
 channels: list of: name: lead identifier (for example: I, II, III, aVR, aVL and aVF, V1, V2…)
-number of samples: sample size of the signal, this value does not always come
-signal: list of integer values
+  number of samples: sample size of the signal, this value does not always come
+  signal: list of integer values
 ```
 
 The information that the endpoint must return will be the number of times that each of the ECG channels passes through
