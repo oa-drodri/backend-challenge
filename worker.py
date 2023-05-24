@@ -68,10 +68,10 @@ def count_zero_passes(execution_data: ExecutionData):
             last_value = signal[0]
             for value in signal[1:]:
                 if value < 0:
-                    if last_value >= 0:
+                    if last_value > 0:
                         count += 1
-                else:
+                if value > 0:
                     if last_value < 0:
                         count += 1
-                last_value = value
+                last_value = value if value!=0 else last_value
     return count

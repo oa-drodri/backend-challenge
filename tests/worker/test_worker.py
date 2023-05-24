@@ -40,6 +40,18 @@ def process_lead_data(data):
             {"name": "Lead1", "signal": [1, 2, 3]},
             {"name": "Lead2", "signal": [4, 5, 6]},
         ]}, 0),
+        ({"leads": [
+            {"name": "Lead1", "signal": [0, 0, 0, 1]}
+        ]}, 0),
+        ({"leads": [
+            {"name": "Lead1", "signal": [1, 0, 0, 0]}
+        ]}, 0),
+        ({"leads": [
+            {"name": "Lead1", "signal": [0, 0, 0, -1]}
+        ]}, 0),
+        ({"leads": [
+            {"name": "Lead1", "signal": [-1, 0, 0, 0]}
+        ]}, 0)
     ]
 )
 def test_count_zero_passes(leads, expected_count, mock_collection):
