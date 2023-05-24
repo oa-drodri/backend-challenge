@@ -22,6 +22,22 @@ async def queue_execution(
     execution: ExecutionData = Body(...),
     token: str = Depends(token_listener)
 ):
+    """Allows authenticated and authorized user
+    to queue a execution providing the ECG data
+
+    Args:
+        execution (ExecutionData, optional): ECG data.
+        Defaults to Body(...).
+        token (str, optional): User's token. Defaults to
+        Depends(token_listener).
+
+    Raises:
+        HTTPException: 403 indicates that authenticated user is not authorized
+
+    Returns:
+        dict: http response generated when execution is queued, providing the
+        execution id
+    """
     user = decode_jwt(token)
     if user.get("role") != "ADMIN":
         new_execution = await add_execution(
@@ -53,6 +69,22 @@ async def execution_status(
     id: PydanticObjectId,
     token: str = Depends(token_listener)
 ):
+    """Allows authenticated and authorized users to query the state from
+    an executed queried.
+
+    Args:
+        id (PydanticObjectId): execution id
+        token (str, optional): User's token. Defaults to Depends(token_
+        listener).
+
+    Raises:
+        HTTPException: 403 indicates that authenticated user is not authorized.
+        HTTPException: 404 execution id provided does not corresponds to any
+        execution.
+
+    Returns:
+        dict: Execution status info
+    """
     user = decode_jwt(token)
     if user.get("role") != "ADMIN":
         execution = await retrieve_execution(id)

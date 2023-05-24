@@ -15,6 +15,19 @@ hash_helper = CryptContext(schemes=["bcrypt"])
 
 @router.post("/login")
 async def user_login(admin_credentials: UserSignIn = Body(...)):
+    """Perform the login of a user by its email and password.
+
+    Args:
+        admin_credentials (UserSignIn, optional): request body
+        containing the user to login. Defaults to Body(...).
+
+    Raises:
+        HTTPException: With status code 403 to represent that
+        credentials used are not from a valid user.
+
+    Returns:
+        str: token for authorized user.
+    """
     admin_exists = await User.find_one(
         User.email == admin_credentials.username
     )
@@ -41,6 +54,23 @@ async def user_login(admin_credentials: UserSignIn = Body(...)):
 async def user_signup(
     new_user: User = Body(...), token: str = Depends(token_listener)
 ):
+    """Perform the new user registration process by an authorized
+    admin user.
+
+    Args:
+        new_user (User, optional): new user information. Defaults to
+        Body(...).
+        token (str, optional): authorized token from user that will
+        register the new user. Defaults to Depends(token_listener).
+
+    Raises:
+        HTTPException: 403 to indicate that the logged user does not
+        have enough permissions
+        HTTPException: 409 to indicate that the new user already exists
+
+    Returns:
+        User: new created user
+    """
     admin = decode_jwt(token)
     if admin.get('role') != "ADMIN":
         raise HTTPException(

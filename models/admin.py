@@ -4,6 +4,7 @@ from pydantic import BaseModel, EmailStr
 
 
 class User(Document):
+    """Database user representation."""
     fullname: str
     email: EmailStr
     password: str
@@ -24,6 +25,7 @@ class User(Document):
 
 
 class UserSignIn(HTTPBasicCredentials):
+    """Request user info representation"""
     class Config:
         schema_extra = {
             "example": {
@@ -34,6 +36,7 @@ class UserSignIn(HTTPBasicCredentials):
 
 
 class UserData(BaseModel):
+    """User info representation as admin endpoints response"""
     fullname: str
     email: EmailStr
     role: str

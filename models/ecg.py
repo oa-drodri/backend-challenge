@@ -6,12 +6,16 @@ from .admin import User
 
 
 class Lead(Document):
+    """A lead represent the actual ECG info.
+    """
     name: str
     sample_count: Optional[int]
     signal: List[float]
 
 
 class ExecutionData(Document):
+    """ExecutionData contains the ECG info from different samples.
+    """
     date: str
     leads: List[Lead]
 
@@ -35,6 +39,9 @@ class ExecutionData(Document):
 
 
 class ExecutionStatus(Document):
+    """ExecutionStatus containes the information from the
+    executed to be calcullated or calcullated.
+    """
     status: str = "QUEUED"
     result: Optional[Any]
     user: User
