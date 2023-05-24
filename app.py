@@ -19,5 +19,5 @@ async def read_root():
     return {"message": "Welcome to this fantastic app."}
 
 
-app.include_router(AdminRouter, tags=["Administrator"], prefix="/admin")
+app.include_router(AdminRouter, tags=["Administrator"], prefix="/user")
 app.include_router(EcgRouter, tags=["ECG"], prefix="/ecg")

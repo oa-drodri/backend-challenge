@@ -1,12 +1,20 @@
-version: "3"
+version: "4"
+
+networks:
+  mynetwork:
 
 services:
   web:
     build: .
     ports:
-      - "8080:8080"
+      - "8000:8000"
     env_file:
       - .env
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      - mynetwork
 
   mongodb:
     image: bitnami/mongodb:latest
@@ -14,7 +22,28 @@ services:
       - "27017"
     volumes:
       - data:/bitnami/mongodb
+    networks:
+      - mynetwork
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  
+      - "15672:15672" 
+    networks:
+      - mynetwork
 
+  worker:
+    build:
+      context: .
+      dockerfile: WorkerDockerfile
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      - mynetwork
+
+  
 volumes:
   data:
+  rabbitmq_data:

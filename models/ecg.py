@@ -2,7 +2,7 @@ from typing import List, Optional, Any
 
 from beanie import Document
 from pydantic import BaseModel
-from .admin import Admin
+from .admin import User
 
 
 class Lead(Document):
@@ -36,8 +36,8 @@ class ExecutionData(Document):
 
 class ExecutionStatus(Document):
     status: str = "QUEUED"
-    result: Optional[int]
-    user: Admin
+    result: Optional[Any]
+    user: User
         
 
 class Response(BaseModel):
