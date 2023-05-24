@@ -38,3 +38,24 @@ And it would be nice to have an ADMIN role that is in charge of registering new 
 to send or obtain information about the ECGs.
 
 The test solution must be posted on this repository like a pull request.
+
+# About my solution
+The solution proposed provide a simple auth system to authenticate and authorize the user to the service.
+Also works on MongoDB to persist the user and ECG data. Besides, services provided by FastAPI also send 
+task to a RabbitMQ system that will communicate to a Celery worker. This worker will be able to process
+the ECG data and persist the results.
+
+This solution has been developed using a mongodb- fastapi template from https://github.com/Youngestdev/fastapi-mongo
+
+# Setting up environment and running the solution
+The project has a docker-compose file that can be used to run the needed docker images.
+
+docker-compose up --build
+
+The service API is available on: http://localhost:8000/
+The service Swagger is available on: http://localhost:8000/docs
+
+The RabbitMQ interface is available on: http://localhost:15672/
+
+Finally, the project also has a test suite that can be executed by the test.sh script.
+
