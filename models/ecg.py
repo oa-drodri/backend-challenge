@@ -9,12 +9,12 @@ class Lead(Document):
     name: str
     sample_count: Optional[int]
     signal: List[float]
-    
+
 
 class ExecutionData(Document):
     date: str
     leads: List[Lead]
-    
+
     class Config:
         schema_extra = {
             "example": {
@@ -23,11 +23,11 @@ class ExecutionData(Document):
                     {
                         "name": "I",
                         "sample_count": 2,
-                        "signal": [ 3.45, -4.3]
+                        "signal": [3.45, -4.3]
                     },
                     {
                         "name": "I",
-                        "signal": [ 3.45, -4.3, 1.2, 3.4, 0.5, -1.7]
+                        "signal": [3.45, -4.3, 1.2, 3.4, 0.5, -1.7]
                     }
                 ]
             }
@@ -38,7 +38,7 @@ class ExecutionStatus(Document):
     status: str = "QUEUED"
     result: Optional[Any]
     user: User
-        
+
 
 class Response(BaseModel):
     status_code: int

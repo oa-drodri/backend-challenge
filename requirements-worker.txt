@@ -1,4 +1,0 @@
-pymongo~=3.12.3
-beanie~=1.10.8
-celery
-fastapi~=0.78.0

@@ -9,3 +9,11 @@ passlib~=1.7.4
 
 beanie~=1.10.8
 celery
+pytest
+flake8
+pytest-xdist
+pytest-cov
+pytest-mock
+pytest-asyncio
+python-dotenv
+mongomock

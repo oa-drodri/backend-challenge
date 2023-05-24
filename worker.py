@@ -26,28 +26,32 @@ logger.addHandler(stream_handler)
 
 
 @celery_app.task
-
 def process_execution(id):
     logger.info("Received task for ID: " + id)
     loop = asyncio.get_event_loop()
     client = AsyncIOMotorClient(mongodb_url)
-    init_task = loop.create_task(init_beanie(database=client.get_default_database(), document_models=[User, ExecutionData, ExecutionStatus, Lead]))
+    init_task = loop.create_task(
+        init_beanie(
+            database=client.get_default_database(),
+            document_models=[User, ExecutionData, ExecutionStatus, Lead]
+            )
+        )
 
     execution_data_promise = ExecutionData.get(id)
     execution_status_promise = ExecutionStatus.get(id)
 
     loop.run_until_complete(init_task)
-    
+
     execution_status = loop.run_until_complete(execution_status_promise)
     execution_status.status = "IN PROGRESS"
     loop.run_until_complete(execution_status.save())
-    
+
     execution_data = loop.run_until_complete(execution_data_promise)
 
     if execution_data:
         count = count_zero_passes(execution_data)
         execution_status.result = {
-            "count_zero_passes" : count
+            "count_zero_passes": count
         }
         execution_status.status = "FINISHED"
         loop.run_until_complete(execution_status.save())
@@ -58,13 +62,16 @@ def process_execution(id):
 
 def count_zero_passes(execution_data: ExecutionData):
     count = 0
-    last_value = 0
     for lead in execution_data.leads:
-        for value in lead.signal:
-            if value < 0:
-                if last_value >= 0:
-                    count += 1
-            else:
-                if last_value < 0:
-                    count += 1
+        signal = lead.signal
+        if len(signal) > 0:
+            last_value = signal[0]
+            for value in signal[1:]:
+                if value < 0:
+                    if last_value >= 0:
+                        count += 1
+                else:
+                    if last_value < 0:
+                        count += 1
+                last_value = value
     return count

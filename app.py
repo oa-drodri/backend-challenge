@@ -1,6 +1,4 @@
-from http.client import HTTPException
-from typing import Annotated
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 
 from config.config import initiate_database
 from routes.admin import router as AdminRouter

@@ -12,7 +12,8 @@ def token_response(token: str):
     }
 
 
-secret_key = Settings().secret_key
+settings = Settings()
+secret_key = settings.secret_key
 
 
 def sign_jwt(user_id: str, role: str) -> Dict[str, str]:
@@ -26,5 +27,9 @@ def sign_jwt(user_id: str, role: str) -> Dict[str, str]:
 
 
 def decode_jwt(token: str) -> dict:
-    decoded_token = jwt.decode(token.encode(), secret_key, algorithms=["HS256"])
+    decoded_token = jwt.decode(
+        token.encode(),
+        secret_key,
+        algorithms=["HS256"]
+    )
     return decoded_token if decoded_token['expires'] >= time.time() else {}

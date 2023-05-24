@@ -13,7 +13,9 @@ async def add_user(new_user: User) -> User:
     return user
 
 
-async def add_execution(new_execution: ExecutionData, user_id: str) -> ExecutionData:
+async def add_execution(
+    new_execution: ExecutionData, user_id: str
+) -> ExecutionData:
     execution_data = await new_execution.create()
     user = await user_collection.find_one({"email": user_id})
     execution_status = ExecutionStatus(id=execution_data.id, user=user)

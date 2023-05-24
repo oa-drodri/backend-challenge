@@ -15,12 +15,16 @@ hash_helper = CryptContext(schemes=["bcrypt"])
 
 @router.post("/login")
 async def user_login(admin_credentials: UserSignIn = Body(...)):
-    admin_exists = await User.find_one(User.email == admin_credentials.username)
+    admin_exists = await User.find_one(
+        User.email == admin_credentials.username
+    )
     if admin_exists:
         password = hash_helper.verify(
             admin_credentials.password, admin_exists.password)
         if password:
-            return sign_jwt(admin_credentials.username, admin_exists.role)
+            return sign_jwt(
+                admin_credentials.username, admin_exists.role
+            )
 
         raise HTTPException(
             status_code=403,
@@ -34,7 +38,9 @@ async def user_login(admin_credentials: UserSignIn = Body(...)):
 
 
 @router.post("/new", response_model=UserData)
-async def user_signup(new_user: User = Body(...), token: str = Depends(token_listener)):
+async def user_signup(
+    new_user: User = Body(...), token: str = Depends(token_listener)
+):
     admin = decode_jwt(token)
     if admin.get('role') != "ADMIN":
         raise HTTPException(
